@@ -126,10 +126,40 @@ HIgh-Level APIs von Google
 - @Angular/service-worker
 
 ### Angular/service-worker
+schlanke eingeschränkte service-worker
+Im Appmodule in die Imports 
+'''ServiceWorkerModule.register('/ngsw-worker.js',
+'''    {enabled: environment.production}),
+
+Service Worker killen -> F12 -> Application -> beim Service Worker: unregister
+
+Status des SW feststellen  URL/ngsw/state
+
+### Angular/pwa
+installiert auch angular/service-worker
+
+ng add @angular/pwa
+-> appModule -> hier serviceworker ngsw-worker.js "deklaration"; Bei eigenem SW wäre der so ähnlich anzugeben.
+
+nur nach prodbuild verfügbar - vermutlich eher wegen kollisionpotential mit debugging
+
+Um Dateien/Daten updaten existiert ein update service. Dieser vergleicht Hash-Werte seiner gecachten Dateien mit den entsprechenden auf dem Server -> Neu laden wenn unterschied existiert. Muss man in der Regel beim Start machen.
+
+
+#### config
+assetgroups <- für app dateien
+installmode: prefetch, lazy,..
+updatemode: prefetch
+
+datagroups  <- für daten
+
 
 ## Sonstige:
 http-server -o (Server Starten)
+live-server
 self = Service Worker (var context: any = self) 
   context.skipwaiting() <-- sofort starten, sonst erst nach Browserneustart.
 Cookies : HTTPOnlyCookies.
 Angular (@angular.service-worker) abstrahiert von der Low-Level API. Genauere Definitionen => Methoden selbst schreiben.
+Bei uns Problem mit dem aktualisieren der Index.html -> die dann nicht mehr zum gespeicherten Hashwert passt über den die Synchronisierung mit geänderten Daten funktioniert ?.
+
