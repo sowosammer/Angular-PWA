@@ -162,4 +162,41 @@ self = Service Worker (var context: any = self)
 Cookies : HTTPOnlyCookies.
 Angular (@angular.service-worker) abstrahiert von der Low-Level API. Genauere Definitionen => Methoden selbst schreiben.
 Bei uns Problem mit dem aktualisieren der Index.html -> die dann nicht mehr zum gespeicherten Hashwert passt über den die Synchronisierung mit geänderten Daten funktioniert ?.
+Development Ansicht -> zur Ansicht von JavaScript log -> in Console "All levels" anzeigen bzw. Verbose anzeige aktivieren.
 
+### push simulieren
+Node Script um Push Notifikatation zu simulieren: npm i web-push --save-dev
+  const pushSubscription = { "endpoint":"[...]", [...] }
+ Starten mit node send-push.js  ( das JS File muss angelegt sein )
+ 
+ const webpush = require('web-push');
+
+const options = {
+    vapidDetails: {
+        subject: 'http://127.0.0.1:8080',
+        publicKey: 'BBc7Bb5f5CRJp7cx19kPHz5d9S5jFSzogxEj2V1C44WuhTwd78tnXLPzOxGe0bUmKJUTAMemSKFzyQjSBN_-XyE',
+        privateKey: 'tBoppvhj9A9NO0ZrFsPiH_CoAZ84TagjxiKyGjR4V8w'
+    },
+    TTL: 5000
+}
+
+const pushSubscription = {"endpoint":"https://fcm.googleapis.com/fcm/send/eLOELq9SYW8:APA91bE3VxAVe1yzum7Q3w8mRzIg6agX1yDzEEiTAf50KGGdnqMEisaGdGiC8B3_OyIrNXtAQmFLlyuWvEGQlHVIV-6P3vnXLjrbWeUHYzjkRuUplX7DKNk3VbOlF408aeMjiZHLktQK","expirationTime":null,"keys":{"p256dh":"BLkNGI_GYTnJPQ84XZuB9SyI1P98mbMxy-1PbbLA4ixHTeMdo0P1UucEfrDxiD19biFfWqnCcHhD232PbxggMZg","auth":"5ubjl_JeMT31_zZE40dFfg"}};
+
+const payload = JSON.stringify({
+    notification: {
+        title: 'Your Gate Changed',
+        body: 'Your Gate is now G62',
+        icon: './assets/bed.png',
+        data: 'additional data'
+    }
+});
+
+webpush.sendNotification(
+    pushSubscription,
+    payload,
+    options
+);
+
+ 
+ 
+ 
