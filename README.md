@@ -80,6 +80,10 @@ PouchDB (kann als Pendent zu CouchDB genutzt werden und damit synchronisierung)
 Dexie (bequem)
 RxDB (unterstützt auch Observables -> Asynchrone information)
 
+##### Dexie
+npm i dexie --save
+
+
 #### Push Notifactions 
 Dazu werden vom Browser Pakete bereitgestellt, die zum Server geschickt werden müssen um das Ziel der Push-Notification festzulegen.
 Hier können gespeicherte Daten nach dem Push aktualisiert werden?;?
@@ -164,6 +168,10 @@ Angular (@angular.service-worker) abstrahiert von der Low-Level API. Genauere De
 Bei uns Problem mit dem aktualisieren der Index.html -> die dann nicht mehr zum gespeicherten Hashwert passt über den die Synchronisierung mit geänderten Daten funktioniert ?.
 Development Ansicht -> zur Ansicht von JavaScript log -> in Console "All levels" anzeigen bzw. Verbose anzeige aktivieren.
 
+### Über Chrome pwa auf Desktop bringen
+chrome://flags/#enable-desktop-pwas
+Bei der App (drei punkte) Installieren. 
+
 ### push simulieren
 Node Script um Push Notifikatation zu simulieren: npm i web-push --save-dev
   const pushSubscription = { "endpoint":"[...]", [...] }
@@ -197,6 +205,10 @@ webpush.sendNotification(
     options
 );
 
+ ## Lösung PWA SSR Problem
+ Eigenen Service Worker implementieren, der auch den ngsw-server (oder war's worker) der für die index.html zuständig ist.
+ Dieser 
  
+ Manfred Steyer aktualisiert sein Beispiel und sendet die url auf sein eingechecktes Beispiel. (git: manfredsteyer/pwa_2019_02_19)
  
  
