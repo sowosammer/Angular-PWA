@@ -1,9 +1,12 @@
 # Angular-PWA
 Notizen etc. zu PWA
 
+Inhalte zu sehen in GitHub manfredsteyer.
+
 Fragen: 
 Synchronisierung Cachng Browser <-> PWA
 Observable oder Promise -> obs.ready um zu warten bis antwort kommt.
+Was können wir Cachen, z.B. Geolocations die immer gleich von Google geholt werden müssen (Geolocation von Nürnberg,..)
 
 Download: http://tinyurl.com/y6pb9bjg
 
@@ -17,8 +20,6 @@ Es müssen grundsätzlich immer Ausweichmechanismen geprüft bzw. realisiert wer
 
 ### Progressive Enhancements nutzen/unterstützen:
 Offline, Caching + versetze Kommunikation mit dem Server, Home Screen, push Notification etc.
-
-
 
 #### Offline
 
@@ -95,22 +96,22 @@ Verbindungsdauer kann Browser mit Push-Service ausmachen.
 ### Home Screener
 - Über das Web App Manifest 
 
-''' {
-''' "name": "Hotel PWA-Demo",
-''' "short_name": "Hotel",
-''' "icons": [{
-''' "src": "images/touch/icon-128x128.png",
-''' "sizes": "128x128",
-''' "type": "image/png"
-''' }, [...] ],
-''' "start_url": "/index.html?homescreen=1",
-''' "display": "standalone",
-''' [...]
-''' }
+``` {
+``` "name": "Hotel PWA-Demo",
+``` "short_name": "Hotel",
+``` "icons": [{
+``` "src": "images/touch/icon-128x128.png",
+``` "sizes": "128x128",
+``` "type": "image/png"
+``` }, [...] ],
+``` "start_url": "/index.html?homescreen=1",
+``` "display": "standalone",
+``` [...]
+``` }
 
 Referenziern:
-''' <!-- Web Application Manifest -->
-''' <link rel="manifest" href="manifest.json">
+``` <!-- Web Application Manifest -->
+``` <link rel="manifest" href="manifest.json">
 
 start_url mit hinweis, dass es vom homescreen gestartet wurde.
 
@@ -155,7 +156,11 @@ assetgroups <- für app dateien
 installmode: prefetch, lazy,..
 updatemode: prefetch
 
-datagroups  <- für daten
+datagroups  <- für daten (siehe angular.io, service-worker config , datagroups // macht eigentlich nur für read-only Daten Sinn.
+  export interface DataGroup 
+      strategy: freshnes = immer möglichst von Server holen, performance= primär vom Cache
+      timeout: wenn nach Zeit x nichts kommt -> vom cache holen
+      maxAge: nach bestimmter Zeit löschen.
 
 
 ## Sonstige:
@@ -168,6 +173,12 @@ Angular (@angular.service-worker) abstrahiert von der Low-Level API. Genauere De
 Bei uns Problem mit dem aktualisieren der Index.html -> die dann nicht mehr zum gespeicherten Hashwert passt über den die Synchronisierung mit geänderten Daten funktioniert ?.
 Development Ansicht -> zur Ansicht von JavaScript log -> in Console "All levels" anzeigen bzw. Verbose anzeige aktivieren.
 
+## Links:
+https://whatwebcando.today/ 
+( Interessante Einsatzgebiete: Geolocation, USB, BlueTooth, Type & Speed, )
+caniuse.com
+
+
 ### Über Chrome pwa auf Desktop bringen
 chrome://flags/#enable-desktop-pwas
 Bei der App (drei punkte) Installieren. 
@@ -179,31 +190,33 @@ Node Script um Push Notifikatation zu simulieren: npm i web-push --save-dev
  
  const webpush = require('web-push');
 
-const options = {
-    vapidDetails: {
-        subject: 'http://127.0.0.1:8080',
-        publicKey: 'BBc7Bb5f5CRJp7cx19kPHz5d9S5jFSzogxEj2V1C44WuhTwd78tnXLPzOxGe0bUmKJUTAMemSKFzyQjSBN_-XyE',
-        privateKey: 'tBoppvhj9A9NO0ZrFsPiH_CoAZ84TagjxiKyGjR4V8w'
-    },
-    TTL: 5000
-}
 
-const pushSubscription = {"endpoint":"https://fcm.googleapis.com/fcm/send/eLOELq9SYW8:APA91bE3VxAVe1yzum7Q3w8mRzIg6agX1yDzEEiTAf50KGGdnqMEisaGdGiC8B3_OyIrNXtAQmFLlyuWvEGQlHVIV-6P3vnXLjrbWeUHYzjkRuUplX7DKNk3VbOlF408aeMjiZHLktQK","expirationTime":null,"keys":{"p256dh":"BLkNGI_GYTnJPQ84XZuB9SyI1P98mbMxy-1PbbLA4ixHTeMdo0P1UucEfrDxiD19biFfWqnCcHhD232PbxggMZg","auth":"5ubjl_JeMT31_zZE40dFfg"}};
+```
+```const options = {
+```    vapidDetails: {
+```        subject: 'http://127.0.0.1:8080',
+```        publicKey: 'BBc7Bb5f5CRJp7cx19kPHz5d9S5jFSzogxEj2V1C44WuhTwd78tnXLPzOxGe0bUmKJUTAMemSKFzyQjSBN_-XyE',
+```        privateKey: 'tBoppvhj9A9NO0ZrFsPiH_CoAZ84TagjxiKyGjR4V8w'
+```    },
+```    TTL: 5000
+```}
 
-const payload = JSON.stringify({
-    notification: {
-        title: 'Your Gate Changed',
-        body: 'Your Gate is now G62',
-        icon: './assets/bed.png',
-        data: 'additional data'
-    }
-});
+```const pushSubscription = {"endpoint":"https://fcm.googleapis.com/fcm/send/eLOELq9SYW8:APA91bE3VxAVe1yzum7Q3w8mRzIg6agX1yDzEEiTAf50KGGdnqMEisaGdGiC8B3_OyIrNXtAQmFLlyuWvEGQlHVIV-6P3vnXLjrbWeUHYzjkRuUplX7DKNk3VbOlF408aeMjiZHLktQK","expirationTime":null,"keys":{"p256dh":"BLkNGI_GYTnJPQ84XZuB9SyI1P98mbMxy-1PbbLA4ixHTeMdo0P1UucEfrDxiD19biFfWqnCcHhD232PbxggMZg","auth":"5ubjl_JeMT31_zZE40dFfg"}};
 
-webpush.sendNotification(
-    pushSubscription,
-    payload,
-    options
-);
+```const payload = JSON.stringify({
+```    notification: {
+```        title: 'Your Gate Changed',
+```        body: 'Your Gate is now G62',
+```        icon: './assets/bed.png',
+```        data: 'additional data'
+```    }
+```});
+
+```webpush.sendNotification(
+```    pushSubscription,
+```    payload,
+```    options
+```);
 
  ## Lösung PWA SSR Problem
  Eigenen Service Worker implementieren, der auch den ngsw-server (oder war's worker) der für die index.html zuständig ist.
@@ -211,4 +224,4 @@ webpush.sendNotification(
  
  Manfred Steyer aktualisiert sein Beispiel und sendet die url auf sein eingechecktes Beispiel. (git: manfredsteyer/pwa_2019_02_19)
  
- 
+
